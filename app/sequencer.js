@@ -1,0 +1,64 @@
+'use strict';
+
+function sequencer (pipeline = []) {
+
+  let write;
+
+  const results = [];
+
+  results._last = () => results[results.length -1];
+
+  return new Promise((resolve, reject) => {
+    try {
+      let cursor = 0;
+
+      let run = () => {
+        try {
+          if ( pipeline[cursor] ) {
+            pipeline[cursor](write, results)
+              .then(result => {
+                try {
+                  cursor ++;
+                  results.push(result);
+                  write = result;
+                  run();
+                }
+                catch ( error ) {
+                  reject(error);
+                }
+              })
+              .catch(reject);
+          }
+          else {
+            resolve(results);
+          }
+        }
+        catch ( error ) {
+          reject(error);
+        }
+      };
+
+      run();
+    }
+    catch ( error ) {
+      reject(error);
+    }
+  });
+}
+
+sequencer.promisify = function (fn, args = [], that = null) {
+  return new Promise((resolve, reject) => {
+    args.push((error, ...args) => {
+      if ( error ) {
+        reject(error);
+      }
+      else {
+        resolve(...args);
+      }
+    });
+
+    fn.apply(that, args);
+  });
+}
+
+export default sequencer;
