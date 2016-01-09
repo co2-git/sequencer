@@ -10,7 +10,7 @@ function sequencer (...pipeline) {
 
   const results = [];
 
-  results._last = () => results[results.length -1];
+  results.getLast = () => results[results.length -1];
 
   return new Promise((resolve, reject) => {
     try {

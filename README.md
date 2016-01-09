@@ -71,27 +71,6 @@ sequencer(
 );
 ```
 
-Even though for such cases it is easier and more readable to use an object in scope such as:
-
-```js
-
-const locals = {};
-
-sequencer(
-
-  () => new Promise(resolve => resolve(1))
-    .then(number => { locals.number1 = number }),
-
-  () => new Promise(resolve => resolve(2))
-    .then(number => { locals.number2 = number }),
-
-  () => new Promise(resolve => {
-    resolve(locals.number1 + locals.number2);
-  })
-
-);
-```
-
 # Chain
 
 sequencer returns a promise itself. The arguments of the results of all the stack.

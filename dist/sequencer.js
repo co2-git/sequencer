@@ -1,7 +1,5 @@
 'use strict';
 
-var _Promise = require('babel-runtime/core-js/promise')['default'];
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
@@ -18,11 +16,11 @@ function sequencer() {
 
   var results = [];
 
-  results._last = function () {
+  results.getLast = function () {
     return results[results.length - 1];
   };
 
-  return new _Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     try {
       (function () {
         var cursor = 0;
@@ -60,7 +58,7 @@ sequencer.promisify = function (fn) {
   var args = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
   var that = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
 
-  return new _Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     args.push(function (error) {
       for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
         args[_key2 - 1] = arguments[_key2];
