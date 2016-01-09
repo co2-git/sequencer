@@ -89,6 +89,21 @@ sequencer(
 .catch(error => { /*...*/ });
 ```
 
+If you want the sequencer to return the last resolve, use `sequencer.pipe()`:
+
+```js
+sequencer.pipe(
+
+  () => new Promise(resolve => resolve(1)),
+
+  () => new Promise(resolve => resolve(2))
+
+)
+.then(result => {
+  console.log(result); // 2
+})
+```
+
 # Signature
 
 You can declare the stack of promises as an array or as a list:

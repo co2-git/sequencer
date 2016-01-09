@@ -50,7 +50,15 @@ function sequencer (...pipeline) {
   });
 }
 
-sequencer.promisify = function (fn, args = [], that = null) {
+sequencer.pipe = function pipe (...stack) {
+  return new Promise((resolve, reject) => {
+    sequencer(stack)
+      .then(results => resolve(results.getLast()))
+      .catch(reject);
+  });
+};
+
+sequencer.promisify = function promisify (fn, args = [], that = null) {
   return new Promise((resolve, reject) => {
     args.push((error, ...args) => {
       if ( error ) {

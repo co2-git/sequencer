@@ -14,6 +14,12 @@ function sequencer() {
 
   var write = undefined;
 
+  var results = [];
+
+  results.getLast = function () {
+    return results[results.length - 1];
+  };
+
   return new Promise(function (resolve, reject) {
     try {
       (function () {
@@ -22,9 +28,10 @@ function sequencer() {
         var run = function run() {
           try {
             if (pipeline[cursor]) {
-              pipeline[cursor](write).then(function (result) {
+              pipeline[cursor](write, results).then(function (result) {
                 try {
                   cursor++;
+                  results.push(result);
                   write = result;
                   run();
                 } catch (error) {
@@ -32,7 +39,7 @@ function sequencer() {
                 }
               })['catch'](reject);
             } else {
-              resolve(write);
+              resolve(results);
             }
           } catch (error) {
             reject(error);
@@ -47,14 +54,26 @@ function sequencer() {
   });
 }
 
-sequencer.promisify = function (fn) {
+sequencer.pipe = function pipe() {
+  for (var _len2 = arguments.length, stack = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    stack[_key2] = arguments[_key2];
+  }
+
+  return new Promise(function (resolve, reject) {
+    sequencer(stack).then(function (results) {
+      return resolve(results.getLast());
+    })['catch'](reject);
+  });
+};
+
+sequencer.promisify = function promisify(fn) {
   var args = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
   var that = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
 
   return new Promise(function (resolve, reject) {
     args.push(function (error) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        args[_key2 - 1] = arguments[_key2];
+      for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+        args[_key3 - 1] = arguments[_key3];
       }
 
       if (error) {
