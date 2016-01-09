@@ -8,6 +8,10 @@ function sequencer (...pipeline) {
 
   let write;
 
+  const results = [];
+
+  results.getLast = () => results[results.length -1];
+
   return new Promise((resolve, reject) => {
     try {
       let cursor = 0;
@@ -15,10 +19,11 @@ function sequencer (...pipeline) {
       let run = () => {
         try {
           if ( pipeline[cursor] ) {
-            pipeline[cursor](write)
+            pipeline[cursor](write, results)
               .then(result => {
                 try {
                   cursor ++;
+                  results.push(result);
                   write = result;
                   run();
                 }
@@ -29,7 +34,7 @@ function sequencer (...pipeline) {
               .catch(reject);
           }
           else {
-            resolve(write);
+            resolve(results);
           }
         }
         catch ( error ) {
