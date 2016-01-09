@@ -1,6 +1,10 @@
 'use strict';
 
-function sequencer (pipeline = []) {
+function sequencer (...pipeline) {
+
+  if ( Array.isArray(pipeline[0]) ) {
+    pipeline = pipeline[0];
+  }
 
   let write;
 

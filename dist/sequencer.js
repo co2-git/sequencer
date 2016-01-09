@@ -6,7 +6,13 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 function sequencer() {
-  var pipeline = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+  for (var _len = arguments.length, pipeline = Array(_len), _key = 0; _key < _len; _key++) {
+    pipeline[_key] = arguments[_key];
+  }
+
+  if (Array.isArray(pipeline[0])) {
+    pipeline = pipeline[0];
+  }
 
   var write = undefined;
 
@@ -56,8 +62,8 @@ sequencer.promisify = function (fn) {
 
   return new _Promise(function (resolve, reject) {
     args.push(function (error) {
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
+      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        args[_key2 - 1] = arguments[_key2];
       }
 
       if (error) {
