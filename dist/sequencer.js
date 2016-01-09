@@ -14,12 +14,6 @@ function sequencer() {
 
   var write = undefined;
 
-  var results = [];
-
-  results.getLast = function () {
-    return results[results.length - 1];
-  };
-
   return new Promise(function (resolve, reject) {
     try {
       (function () {
@@ -28,10 +22,9 @@ function sequencer() {
         var run = function run() {
           try {
             if (pipeline[cursor]) {
-              pipeline[cursor](write, results).then(function (result) {
+              pipeline[cursor](write).then(function (result) {
                 try {
                   cursor++;
-                  results.push(result);
                   write = result;
                   run();
                 } catch (error) {
@@ -39,7 +32,7 @@ function sequencer() {
                 }
               })['catch'](reject);
             } else {
-              resolve(results);
+              resolve(write);
             }
           } catch (error) {
             reject(error);
