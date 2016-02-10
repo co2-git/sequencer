@@ -1,6 +1,6 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 function sequencer() {
@@ -37,7 +37,7 @@ function sequencer() {
                 } catch (error) {
                   reject(error);
                 }
-              })['catch'](reject);
+              }).catch(reject);
             } else {
               resolve(results);
             }
@@ -62,7 +62,7 @@ sequencer.pipe = function pipe() {
   return new Promise(function (resolve, reject) {
     sequencer(stack).then(function (results) {
       return resolve(results.getLast());
-    })['catch'](reject);
+    }).catch(reject);
   });
 };
 
@@ -87,5 +87,4 @@ sequencer.promisify = function promisify(fn) {
   });
 };
 
-exports['default'] = sequencer;
-module.exports = exports['default'];
+exports.default = sequencer;
