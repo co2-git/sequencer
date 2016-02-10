@@ -3,9 +3,21 @@ sequencer
 
 Run promises one after the other.
 
+# Install
+
+```bash
+npm install promise-sequencer
+```
+
+# Usage
+
+```js
+import sequencer from 'promise-sequencer';
+```
+
 # Promise
 
-If you use standard promises, you have the method `all()` that will run a batch of promises independently from one to the other. `sequencer` will run them one by one, stopping if one in that stack fails.
+If you use standard promises, you have the method `all()` that will run a batch of promises independently from one to the other. `sequencer` will run them one by one, stopping if one in the stack fails.
 
 # Usage
 
