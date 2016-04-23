@@ -10,8 +10,6 @@ function sequencer (...pipeline) {
 
   const results = [];
 
-  results.getLast = () => results[results.length -1];
-
   return new Promise((resolve, reject) => {
     try {
       let cursor = 0;
@@ -53,7 +51,7 @@ function sequencer (...pipeline) {
 sequencer.pipe = function pipe (...stack) {
   return new Promise((resolve, reject) => {
     sequencer(stack)
-      .then(results => resolve(results.getLast()))
+      .then(results => resolve(results[results.length -1]))
       .catch(reject);
   });
 };

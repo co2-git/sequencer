@@ -12,13 +12,9 @@ function sequencer() {
     pipeline = pipeline[0];
   }
 
-  var write = undefined;
+  var write = void 0;
 
   var results = [];
-
-  results.getLast = function () {
-    return results[results.length - 1];
-  };
 
   return new Promise(function (resolve, reject) {
     try {
@@ -61,7 +57,7 @@ sequencer.pipe = function pipe() {
 
   return new Promise(function (resolve, reject) {
     sequencer(stack).then(function (results) {
-      return resolve(results.getLast());
+      return resolve(results[results.length - 1]);
     }).catch(reject);
   });
 };
